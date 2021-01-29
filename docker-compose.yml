@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  oboco-backend-database:
+    image: mariadb:latest
+    container_name: oboco-backend-database
+    environment:
+      TZ: Europe/Brussels
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: oboco
+    restart: always
+    ports:
+      - "6033:3306"
+    volumes:
+      - "c:/oboco/application-database-data:/var/lib/mysql"
+      - "./database.sql:/docker-entrypoint-initdb.d/database.sql"
+  oboco-backend:
+    image: registry.gitlab.com/jeeto/oboco-backend/oboco-backend-mysql:latest
+    container_name: oboco-backend
+    links:
+      - oboco-backend-database
+    environment:
+      TZ: Europe/Brussels
+      APPLICATION_AUTHENTICATION_SECRET: secret
+      APPLICATION_DATABASE_URL: jdbc:mysql://192.168.0.124:6033/oboco
+      APPLICATION_DATABASE_USER_NAME: root
+      APPLICATION_DATABASE_USER_PASSWORD: toor
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - "c:/oboco/application-logger-data:/application-logger-data"
+      - "c:/oboco/application-data:/application-data"
+      - "c:/oboco/user-data:/user-data"
+  oboco-frontend:
+    image: registry.gitlab.com/jeeto/oboco-frontend/oboco-frontend:latest
+    container_name: oboco-frontend
+    links:
+      - oboco-backend
+    environment:
+      TZ: Europe/Brussels
+      BASE_URL: http://127.0.0.1:8080
+    restart: always
+    ports:
+      - "9080:9080"
