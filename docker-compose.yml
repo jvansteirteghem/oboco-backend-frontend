@@ -12,8 +12,12 @@ services:
     ports:
       - "6033:3306"
     volumes:
-      - "c:/oboco/application-database-data:/var/lib/mysql"
+      - "./application-database-data:/var/lib/mysql"
       - "./database.sql:/docker-entrypoint-initdb.d/database.sql"
+    networks:
+      oboco:
+        aliases:
+          - oboco-backend-database
   oboco-backend:
     image: registry.gitlab.com/jeeto/oboco-backend/oboco-backend-mysql:latest
     container_name: oboco-backend
@@ -22,16 +26,18 @@ services:
     environment:
       TZ: Europe/Brussels
       APPLICATION_AUTHENTICATION_SECRET: secret
-      APPLICATION_DATABASE_URL: jdbc:mysql://192.168.0.124:6033/oboco
+      APPLICATION_DATABASE_URL: jdbc:mysql://oboco-backend-database:3306/oboco
       APPLICATION_DATABASE_USER_NAME: root
       APPLICATION_DATABASE_USER_PASSWORD: toor
     restart: always
-    ports:
-      - "8080:8080"
+    networks:
+      oboco:
+        aliases:
+          - oboco-backend
     volumes:
-      - "c:/oboco/application-logger-data:/application-logger-data"
-      - "c:/oboco/application-data:/application-data"
-      - "c:/oboco/user-data:/user-data"
+      - "./application-logger-data:/application-logger-data"
+      - "./application-data:/application-data"
+      - "./user-data:/user-data"
   oboco-frontend:
     image: registry.gitlab.com/jeeto/oboco-frontend/oboco-frontend:latest
     container_name: oboco-frontend
@@ -39,7 +45,25 @@ services:
       - oboco-backend
     environment:
       TZ: Europe/Brussels
-      BASE_URL: http://127.0.0.1:8080
+      BASE_URL: 
     restart: always
+    networks:
+      oboco:
+        aliases:
+          - oboco-frontend
+  oboco-backend-frontend:
+    depends_on:
+      - oboco-frontend
+      - oboco-backend
+    image: nginx:alpine
+    container_name: oboco-backend-frontend
+    volumes: 
+      - "./default.conf:/etc/nginx/conf.d/default.conf"
+    networks:
+      oboco:
+        aliases:
+          - oboco-backend-frontend
     ports:
-      - "9080:9080"
+        - "80:80"
+networks:
+    oboco:
