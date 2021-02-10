@@ -13,7 +13,7 @@
 		- MYSQL_DATABASE: the database name
 	- services.oboco-backend.environment
 		- TZ: the timezone
-		- APPLICATION_AUTHENTICATION_SECRET: the authentication secret
+		- APPLICATION_SECURITY_AUTHENTICATION_SECRET: the authentication secret
 		- APPLICATION_DATABASE_URL: the database url
 		- APPLICATION_DATABASE_USER_NAME: the database user name
 		- APPLICATION_DATABASE_USER_PASSWORD: the database user password
