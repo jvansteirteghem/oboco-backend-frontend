@@ -13,14 +13,14 @@
 		- MYSQL_DATABASE: the database name
 	- services.oboco-backend.environment
 		- TZ: the timezone
-		- APPLICATION_SECURITY_AUTHENTICATION_SECRET: the authentication secret
-		- APPLICATION_DATABASE_URL: the database url
-		- APPLICATION_DATABASE_USER_NAME: the database user name
-		- APPLICATION_DATABASE_USER_PASSWORD: the database user password
+		- OBOCO_SECURITY_AUTHENTICATION_SECRET: the authentication secret
+		- OBOCO_DATABASE_URL: the database url
+		- OBOCO_DATABASE_USER_NAME: the database user name
+		- OBOCO_DATABASE_USER_PASSWORD: the database user password
 	- services.oboco-backend.volumes
-		- /application-logger-data: the application logger data
-		- /application-data: the application data (book pages)
-		- /user-data: the user data (books, book collections)
+		- /application-logger-data: the logger data
+		- /application-data: the data (book pages)
+		- /user-data: the data (books, book collections)
 	- services.oboco-frontend.environment
 		- TZ: the timezone
 
