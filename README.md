@@ -28,7 +28,7 @@
 
 - start
 	- docker-compose up (-d)
-	- when database is ready (mysqld: ready for connections.), open http://127.0.0.1
+	- when database is ready (mariadbd: ready for connections.), open http://127.0.0.1
 	- log in
 		- name: administrator
 		- password: administrator
