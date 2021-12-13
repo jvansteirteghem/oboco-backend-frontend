@@ -25,7 +25,7 @@ services:
       - oboco-backend-database
     environment:
       TZ: Europe/Brussels
-      OBOCO_SECURITY_AUTHENTICATION_SECRET: secret
+      OBOCO_SERVER_AUTHENTICATION_SECRET: secret
       OBOCO_DATABASE_URL: jdbc:mysql://oboco-backend-database:3306/oboco
       OBOCO_DATABASE_USER_NAME: root
       OBOCO_DATABASE_USER_PASSWORD: toor
